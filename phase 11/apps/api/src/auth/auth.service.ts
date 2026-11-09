@@ -31,15 +31,18 @@ export class AuthService {
     let result;
     try {
       result = await this.supabase.anon().auth.signInWithPassword({ email: address, password });
-    } catch {
+    } catch (err) {
+      console.error('LOGIN CATCH:', err);
       throw new HttpException(MESSAGES.serverProblem, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     const { data, error } = result;
     if (error) {
       if (error.status === 400 || error.code === 'invalid_credentials') {
+        console.error('LOGIN SUPABASE ERROR:', error);
         this.lock.recordFailure(address);
         throw new HttpException(MESSAGES.wrongDetails, HttpStatus.UNAUTHORIZED);
       }
+      console.error('LOGIN NO SESSION:', data);
       throw new HttpException(MESSAGES.serverProblem, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     if (!data.session || !data.user) {
