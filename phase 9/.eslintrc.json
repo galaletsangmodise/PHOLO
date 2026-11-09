@@ -1,0 +1,24 @@
+{
+  "root": true,
+  "ignorePatterns": ["node_modules/", "dist/", ".next/", "coverage/", "next-env.d.ts"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "env": { "node": true, "es2022": true },
+  "settings": { "next": { "rootDir": "apps/web/" } },
+  "overrides": [
+    {
+      "files": ["apps/web/**/*.ts", "apps/web/**/*.tsx"],
+      "extends": ["next/core-web-vitals"],
+      "env": { "browser": true }
+    },
+    {
+      "files": ["**/*.spec.ts", "**/*.test.ts", "**/*.test.tsx", "**/*.int-spec.ts"],
+      "env": { "jest": true }
+    },
+    {
+      "files": ["**/*.js"],
+      "rules": { "@typescript-eslint/no-var-requires": "off" }
+    }
+  ]
+}
